@@ -25,6 +25,9 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", None))
 # Get this value from @MissRose_Bot on Telegram by /id
 OWNER_ID = int(getenv("OWNER_ID", None))
 
+# dev name
+OWNER_NAME = getenv("DEV_NAME", "t.me/CwaX7")
+
 # Fill Queue Limit . Example - 15
 QUEUE_LIMIT = int(getenv("QUEUE_LIMIT", "10"))
 
@@ -48,8 +51,8 @@ GIT_TOKEN = getenv(
     "GIT_TOKEN", None
 )  # Fill this variable if your upstream repository is private
 
-SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/TeamInflex")
-SUPPORT_GROUP = getenv("SUPPORT_GROUP", "https://t.me/InflexSupport")
+SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/veten_1")
+SUPPORT_GROUP = getenv("SUPPORT_GROUP", "https://t.me/BotlarDesdek")
 
 # Set this to True if you want the assistant to automatically leave chats after an interval
 AUTO_LEAVING_ASSISTANT = bool(getenv("AUTO_LEAVING_ASSISTANT", False))
