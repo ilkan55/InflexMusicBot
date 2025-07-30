@@ -1,6 +1,12 @@
 from pyrogram import Client, errors
 from pyrogram.enums import ChatMemberStatus, ParseMode
-
+from pyrogram.types import (
+    BotCommand,
+    BotCommandScopeAllGroupChats,
+    BotCommandScopeAllPrivateChats,
+)
+import sys
+import traceback
 import config
 
 from ..logging import LOGGER
@@ -29,7 +35,7 @@ class Inflex(Client):
         try:
             await self.send_message(
                 chat_id=config.LOG_GROUP_ID,
-                text=f"<u><b>» {self.mention} 𝖡𝗈𝗍 𝖲𝗍𝖺𝗋𝗍𝖾𝖽 :</b><u>\n\n𝖨𝖣 : <code>{self.id}</code>\n𝖭𝖺𝗆𝖾 : {self.name}\n𝖴𝗌𝖾𝗋𝗇𝖺𝗆𝖾 : @{self.username}",
+                text=f"<u>{self.mention} bot aktiv edildi</b><u>\n\n🆔: <code>{self.id}</code>\n🤖: {self.name}\n🔗: @{self.username}",
             )
         except (errors.ChannelInvalid, errors.PeerIdInvalid):
             LOGGER(__name__).error(
@@ -41,7 +47,41 @@ class Inflex(Client):
                 f"Bot has failed to access the log group/channel.\n  Reason : {type(ex).__name__}."
             )
             exit()
+        try:
+            GROUP_COMMANDS = [
+                # BotCommand("start", "🎧 Botu başlatır"),
+                BotCommand("play", "🎶"),
+                BotCommand("vplay", "🎥"),
+                BotCommand("skip", "⏭"),
+                BotCommand("end", "⏹"),
+                BotCommand("setting", "⚙️"),
+                ]
 
+            PRIVATE_COMMANDS = [
+            BotCommand("start", "🎧"), 
+            BotCommand("help", "📖"),
+            BotCommand("sudolist", "🧑🏻‍💻👩🏻‍💻"),
+            ]
+            await self.set_bot_commands(  # * Group Commands
+                commands=GROUP_COMMANDS,
+                scope=BotCommandScopeAllGroupChats(),
+            )
+            await self.set_bot_commands(  # * Private Commands
+                commands=PRIVATE_COMMANDS,
+                scope=BotCommandScopeAllPrivateChats(),
+            )
+            LOGGER(__name__).info("Commands are set successfully")
+        except Exception as e:
+            trace = traceback.format_exc()
+            LOGGER(__name__).error(f"Error during setting commands: {trace}")
+            sys.exit()
+        else:
+            pass
+
+            a = await self.get_chat_member(config.LOG_GROUP_ID, self.id)
+            if a.status != ChatMemberStatus.ADMINISTRATOR:
+                LOGGER(__name__).error("Please promote Bot as Admin in Logger Group")
+                sys.exit()        
         a = await self.get_chat_member(config.LOG_GROUP_ID, self.id)
         if a.status != ChatMemberStatus.ADMINISTRATOR:
             LOGGER(__name__).error(
@@ -52,3 +92,7 @@ class Inflex(Client):
 
     async def stop(self):
         await super().stop()
+
+
+#reponu satan bize ata desin
+# @PersionalSupport
